@@ -177,7 +177,10 @@
 				
 				ul#list-nav li a:hover {
 					background: #007ab6;
-					color:#000;
+					font-weight:bolder;
+					color:#FFF;
+					background-image:url('/images/bg_menu.gif');
+					background-position:50% left;
 				}
 				
 		/*--Main Box--*/
