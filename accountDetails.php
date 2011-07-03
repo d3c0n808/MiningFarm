@@ -87,23 +87,17 @@ if($loginValid){
 
 				
 		}
+		
+		$adminFee = getAdminFee();
 ?>
 <!--?xml version="1.0" encoding="iso-8859-1"?-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title><?php echo outputPageTitle();?> - <?php echo gettext("Main Page");?></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<link href="/css/mainstyle.css" rel="stylesheet" type="text/css">
-	</head> 
-	<body>
-		<br/><br/>
-<html>
-	<head>
 		<title><?php echo outputPageTitle();?> - Account Details</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<!--This is the main style sheet-->
 		<link rel="stylesheet" href="/css/mainstyle.css" type="text/css" />
-		<link rel="shortcut icon" href="/images/favicon.png" />
 		<script type="text/javascript" src="/js/tooltipFollower.js"/>
 		<?php
 			//If user isn't logged in load the login.js
@@ -155,14 +149,13 @@ if($loginValid){
 								<hr size="1" width="100%"/>
 								<?php echo gettext("Confirmed Balance");?>: <?php setlocale(LC_MONETARY, 'en_US'); echo $getCredientials->accountBalance;?> BTC<br/>
 								<?php echo gettext("Unconfirmed Balance");?>: <?php echo $getCredientials->pendingBalance;?> BTC<br/>
-								<?php echo gettext("Estimated Reward this Round");?>: <?php echo $getCredientials->estimatedReward;?> BTC
+								<?php echo gettext("Estimated Reward this Round");?>: <?php echo $getCredientials->estimatedReward*(50-(50*($adminFee*.01)));;?> BTC
 								<!--Identity Details End Content-->
 								
 								<!--JSON Data-->
 								<h3 class="accountHeader"><?php echo gettext("JSON Mining &amp; Worker Data");?></h3>
 								<input type="text" name="nothing" value="<?php echo $getCredientials->apiToken;?>" size="40" onMouseOver="showTooltip('<?php echo gettext("API token to give you <i>private</i> access to your worker status");?>');" onMouseOut="hideTooltip();"/><br/>
 								<a class="accountLinks" href="/json/workerstatus.php?apiToken=<?php echo $getCredientials->apiToken;?>"><?php echo gettext("Worker Status");?></a><br/>
-								<a class="accountLinks" href="/json/poolstats.php"><?php echo gettext("Overall Stats");?></a>
 							</td>
 						</td>
 					</tbody>
@@ -219,7 +212,7 @@ if($loginValid){
 										<i>Authorisation Pin:</i> <input type="password" name="authPin" value="" size="4" maxlength="4"><br/>
 										You will be sending the amount of <b><?php echo $getCredientials->accountBalance;?>BTC</b>
 										<br/>to the bitcoin address of <?php
-												if(isSet($getCredentials->sendAddress)){
+												if(isSet($getCredientials->sendAddress)){
 													echo $getCredientials->sendAddress;
 												}else{
 													echo "<b>".gettext("None")."</b>";

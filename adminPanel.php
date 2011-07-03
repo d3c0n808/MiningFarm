@@ -156,6 +156,7 @@
 									//Decide what we want to display based on what $act says
 									////////////////////////////////////////////////////////
 									if($show == "" || $show == "editBlog"){
+										
 								?>
 								
 									<h2 style="text-decoration:underline;"><?php echo gettext("Website Settings");?></h2>
@@ -225,122 +226,6 @@
 						</td>
 					</tbody>
 				</table>
-
-				<br><br>
-			<?php if($show == ""){?>
-			<!--Start Blog Editor Panel-->
-				<table align="center" cellpadding="0" cellspacing="0" class="bigContent">
-					<tbody>
-						<tr>
-							<td class="contTL">
-							&nbsp;
-							</td>
-							<td class="contTC">
-								Add a Blog post
-							</td>
-							<td class="contTR">
-							&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3" class="contContent">
-								<div style="float:left;">
-									
-										
-										
-										
-									</form>
-								</div>
-								<div style="float:left;">
-									<table align="center" cellpadding="5" cellspacing="5">
-										<tbody>
-											<tr>
-												<td class="boxleft">
-													<form action="?adminPanel.php" method="post">
-														<input type="hidden" name="act" value="addBlog"/>
-														<h1 class="headerbox"><input type="text" name="blogTitle" value="Blog Title" id="blogTitleInput" onKeyDown="updateBlogTitle();" onKeyUp="updateBlogTitle();" onKeyPress="updateBlogTitle();" /></h1>
-														<div class="boxtext" align="center">
-															<textarea cols="34" rows="5" name="blogContentInput" id="blogContentInput" onKeyUp="updateBlogContent();" onKeyDown="updateBlogContent();" onKeyPress="updateBlogContent();">Testing</textarea>
-														</div>
-														Auth Pin:<input type="password" value="" name="authPin" size="4" maxlength="4"/><br/>
-														<input type="submit" value="Add Blog Post"/>
-													</form>
-												</td>
-												<td class="boxleft">
-													<h1 class="headerbox" id="newBlogTitle"></h1>
-													<div class="boxtext">
-														Posted: <?php echo date("m/d/Y G:i:s",time());?>
-														<div id="newBlogContent">test</div>
-													</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</td>
-						</td>
-					</tbody>
-				</table>
-				<?php }else if($show == "editBlog"){ ?>
-				<table align="center" cellpadding="0" cellspacing="0" class="bigContent">
-					<tbody>
-						<tr>
-							<td class="contTL">
-							&nbsp;
-							</td>
-							<td class="contTC">
-								Edit the following Blog post
-							</td>
-							<td class="contTR">
-							&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3" class="contContent">
-								<div style="float:left;">
-									
-										
-										
-										
-									</form>
-								</div>
-								<div style="float:left;">
-									<table align="center" cellpadding="5" cellspacing="5">
-										<tbody>
-											<tr>
-												<td class="boxleft">
-													<?php
-														//Get blog post by id
-															$tmpBlogId = mysql_real_escape_string($_GET["id"]);
-															$blogInfoQ = mysql_query("SELECT `title`, `message`, `timestamp` FROM `blogPosts` WHERE `id` = '$tmpBlogId'");
-															$blogInfo = mysql_fetch_object($blogInfoQ);
-													?>
-													<form action="?adminPanel.php" method="post">
-														<input type="hidden" name="act" value="addBlog"/>
-														<h1 class="headerbox"><input type="text" name="blogTitle" value="<?php echo $blogInfo->title;?>" id="blogTitleInput" onKeyDown="updateBlogTitle();" onKeyUp="updateBlogTitle();" onKeyPress="updateBlogTitle();" /></h1>
-														<div class="boxtext" align="center">
-															<textarea cols="34" rows="5" name="blogContentInput" id="blogContentInput" onKeyUp="updateBlogContent();" onKeyDown="updateBlogContent();" onKeyPress="updateBlogContent();"><?php echo $blogInfo->message; ?></textarea>
-														</div>
-														Auth Pin:<input type="password" value="" name="authPin" size="4" maxlength="4"/><br/>
-														<input type="submit" value="Add Blog Post"/>
-													</form>
-												</td>
-												<td class="boxleft">
-													<h1 class="headerbox" id="newBlogTitle"></h1>
-													<div class="boxtext">
-														Posted: <?php echo date("m/d/Y G:i:s",time());?>
-														<div id="newBlogContent">test</div>
-													</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</td>
-						</td>
-					</tbody>
-				</table>
-				<?php } ?>
 				<br><br>
 			</div>
 			<?php

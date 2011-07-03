@@ -17,12 +17,13 @@ original ref link provided.
 /////////////////////////////////////////////////////////////////
 Installations instructions are as the following
 
-1]Extract the miningpool-v3.tar.gz to where your web server is located.
+1]Extract the miningpool.tar.gz to where your web server is located.
 2]Edit the functions.php file to your needs.
-3]Add a cronjob for blockUpdate.php at the rate of 10minutes
-4]Add a cronjob for blockFound.php at the rate of 15minutes
+3]Add a cronjob for blockUpdate.php at the rate of 5minutes
+4]Add a cronjob for blockFound.php at the rate of 8minutes
+5]Add a cronjob for statsUpdater.php at the rate of what you would like to have stats updated
 5]Extract the insert_into_db.sql file into your database
-6]Open up your website and register
-7]Activate your account with the email link or set the `emailAuthorised` flag to 1
-8]Go into the database and set your account with the `isAdmin` flag to 1
-9]You can now view the Admin Panel and start advertising your site to the bitcoin community
+7]Open up your website and register
+8]Activate your account with the email link or set the `emailAuthorised` flag to 1
+9]Go into the database and set your account with the `isAdmin` flag to 1
+10]You can now view the Admin Panel and start advertising your site to the bitcoin community

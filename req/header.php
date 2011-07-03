@@ -24,7 +24,7 @@ if(!$loginValid){
 	<div class="login" align="right">
 		<form method="POST" action="/login.php" name="loginForm">
 			<input name="username" value="username" id="userForm" onMouseDown="clearUsername();" size="15" type="text"><br>
-			<input type="password" name="password" value="password" id="passForm" onMouseDown="clearPassword();" size="15">
+			<input type="password" name="password" value="password" id="passForm" onMouseDown="clearPassword();" onKeyDown="pressedEnter(event);" onKeyUp="pressedEnter(event);" onKeyPress="pressedEnter(event);" size="15">
 			<br>
 		</form>
 			<input src="/images/register.gif" value="Regsiter" type="image" class="regsiterBtn"  onMouseUp="void(document.location='/register.php');"> &nbsp; <input src="/images/login.gif" value="Login" type="image"  onMouseUp="void(document.forms['loginForm'].submit())">
@@ -68,7 +68,7 @@ if(!$loginValid){
 					$adminFee = getAdminFee();
 			?>
 			<span class="userText">Bitcoin Value: <a href="http://www.tradehill.com/TradeData?r=TH-R13231" target="tradeHillPage"><span class="estimated">$<?php echo $tradeHillWorth->tradeHillWorth;?></span></a></span><br/>
-			<span class="userText">Estimated: <span class="estimated"><?php echo $getCredientials->estimatedReward*50;?> BTC</span></span><br/>
+			<span class="userText">Estimated: <span class="estimated"><?php echo $getCredientials->estimatedReward*(50-(50*($adminFee*.01)));?> BTC</span></span><br/>
 			<span class="userText">Total Balance: <span class="confirmedBalance"><?php echo $totalBalance;?></span></span><br/>
 			<a href="/logout.php">Logout</a>
 	</div>

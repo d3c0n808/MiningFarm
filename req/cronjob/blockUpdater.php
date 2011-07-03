@@ -74,6 +74,7 @@ try{
 }catch (Exception $e) {
 	echo "Failed to get TradeHill bitcoioin worth<br/>".$e;
 }
+echo time();
 ?>
 
 

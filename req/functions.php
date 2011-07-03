@@ -147,6 +147,7 @@ class getCredientials{
 		public $sendAddress = "";
 		public $threshHold = 0;
 		public $apiToken = "";
+		public $statsShowAllUsers = 0;
 		
 	//Admin variables
 		public $adminHeader = "";
@@ -280,7 +281,7 @@ class getCredientials{
 				connectToDb();
 
 			//Get website settings
-				$websiteSettingsQ = mysql_query("SELECT `header`, `noreplyEmail`, `slogan`, `browserTitle`, `cashoutMinimum` FROM `websiteSettings`");
+				$websiteSettingsQ = mysql_query("SELECT `header`, `noreplyEmail`, `slogan`, `browserTitle`, `cashoutMinimum`, `stats_showallusers` FROM `websiteSettings`");
 				$websiteSettings = mysql_fetch_object($websiteSettingsQ);
 
 				$this->adminHeader		= $websiteSettings->header;
@@ -288,6 +289,7 @@ class getCredientials{
 				$this->adminBrowserTitle	= $websiteSettings->browserTitle;
 				$this->adminCashoutMin		= $websiteSettings->cashoutMinimum;
 				$this->adminEmail		= $websiteSettings->noreplyEmail;
+				$this->statsShowAllUsers	= $websiteSettings->stats_showallusers;
 		}
 }
 
