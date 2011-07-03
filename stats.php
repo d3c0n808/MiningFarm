@@ -98,9 +98,9 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 																			
 																		//Get percentage of reward
 																			$reward = $roundUserTotal/$roundTotal;
-																			$reward *= 50;
+																			
 																		//Subtract Admin percentage fee
-																			$reward = $reward-($reward*($currentAdminFee*0.1));
+																			$reward = $reward*(50-(50*($currentAdminFee*0.01)));
 																			
 																	}else{
 																			$reward = "Not logged in";
