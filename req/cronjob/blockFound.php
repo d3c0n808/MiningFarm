@@ -93,9 +93,16 @@ print_r($transactions);
 					$winningAccountObj	= mysql_fetch_object($winningAccountQ);
 					$winningId		= $winningAccountObj->id;
 					$confirms		= $transactions[$i]["confirmations"];
+					$orphan			= $transactions[$i]["category"];
+					
+					if($orphan == "orphan"){
+						$orphan = 1;
+					}else if($orphan != "orphan"){
+						$orphan = 0;
+					}
 
 					//Update X amount of confirms
-						mysql_query("UPDATE `networkBlocks` SET `confirms` = '$confirms' WHERE `id` = '$winningId'");
+						mysql_query("UPDATE `networkBlocks` SET `confirms` = '$confirms', `orphan` = '$orphan' WHERE `id` = '$winningId'");
 			}
 	}
 

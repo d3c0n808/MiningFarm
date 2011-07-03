@@ -285,7 +285,10 @@
 	#activateEmail{
 		text-align:center;
 	}
-		
+	
+	.statsOrphanRow{
+		background-color:#FFC3CE;
+	}
 
 	
 

@@ -27,7 +27,7 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title><?php echo outputPageTitle();?> - <?php echo gettext("Main Page");?></title>
+		<title><?php echo outputPageTitle();?> - <?php echo gettext("Statistics");?></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<link href="/css/mainstyle.css" rel="stylesheet" type="text/css">
 	</head> 
@@ -79,7 +79,7 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 												$getCredientials->getStats();
 												$currentAdminFee = getAdminFee();
 												//Retireve all blocks awaiting confirmation
-													$getBlocksQ = mysql_query("SELECT `blockNumber`, `timestamp`, `confirms` FROM `networkBlocks` WHERE `txid` != '' ORDER BY `timestamp` DESC");
+													$getBlocksQ = mysql_query("SELECT `blockNumber`, `timestamp`, `confirms`, `orphan` FROM `networkBlocks` WHERE `txid` != '' ORDER BY `timestamp` DESC");
 													$numBlocksFound = mysql_num_rows($getBlocksQ);
 													
 													//If their are blocks found, display the Blocks found/ETA next block graph
@@ -108,7 +108,7 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 																
 											?>
 											<!--Start block information-->
-										<tr>
+										<tr<?php if($block["orphan"] == 1){ echo ' class="statsOrphanRow"';}?>>
 											<td>
 												<?php echo $block["blockNumber"];?>
 											</td>
@@ -119,7 +119,13 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 												<?php echo date("m/d g:i a", $block["timestamp"]);?>
 											</td>
 											<td>
-												<?php echo $reward;?>
+												<?php 
+												if($block["orphan"] == 1){
+													echo "Invalid/Orphan (".$reward.")";
+												}else if($block["orphan"] == 0){
+													echo $reward;
+												}
+												?>
 											</td>
 										</tr>
 											<!--End Block Information-->
