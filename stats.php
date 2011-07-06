@@ -79,7 +79,7 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 												$getCredientials->getStats();
 												$currentAdminFee = getAdminFee();
 												//Retireve all blocks awaiting confirmation
-													$getBlocksQ = mysql_query("SELECT `blockNumber`, `timestamp`, `confirms`, `orphan` FROM `networkBlocks` WHERE `txid` != '' ORDER BY `timestamp` DESC");
+													$getBlocksQ = mysql_query("SELECT `blockNumber`, `timestamp`, `confirms`, `orphan` FROM `networkBlocks` WHERE `txid` != '' ORDER BY `timestamp` DESC LIMIT 0,120");
 													$numBlocksFound = mysql_num_rows($getBlocksQ);
 													
 													//If their are blocks found, display the Blocks found/ETA next block graph
@@ -97,7 +97,11 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 																			$roundUserTotal = mysql_num_rows($roundUserTotalQ);
 																			
 																		//Get percentage of reward
-																			$reward = $roundUserTotal/$roundTotal;
+																			if($roundUserTotal > 0 && $roundTotal > 0){
+																				$reward = $roundUserTotal/$roundTotal;
+																			}else{
+																				$reward = 0;
+																			}
 																			
 																		//Subtract Admin percentage fee
 																			$reward = $reward*(50-(50*($currentAdminFee*0.01)));

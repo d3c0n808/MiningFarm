@@ -99,14 +99,14 @@
 												
 													//Add suffix to the activation link
 														$serverAddress = $_SERVER['HTTP_HOST'];
-														$message .= "\nAuthorization #\n".$authoriseEmailPin."\n<br/>http://$serverAddress/activateAccount.php?authNumber=".$authoriseEmailPin."&username=".$username;
+														$message .= "\nAuthorization #\n".$authoriseEmailPin."\nhttp://$serverAddress/activateAccount.php?authNumber=".$authoriseEmailPin."&username=".$username;
 											
 												//Send an email with all the information
 													$to      = $email;
 													$subject = "Account Activation For ".$username;
 													$headers = "From: ".$noreplyEmail;
 
-													mail($to, $subject, $message, $headers);
+													mail($to, $subject, $message);
 
 												$goodMessage = gettext("Registration was a success! | Login to your email, ").$_POST["email"].gettext(" and click on link to activate your account!");
 											

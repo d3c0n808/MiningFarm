@@ -37,20 +37,12 @@ if($loginValid){
 							
 							//Validate $payoutAddress is valid;
 								$openBitcoinClient	= new Bitcoin();
-								$isValidPayment	= $openBitcoinClient->checkAddress($payoutAddress);
-
-								if(!$isValidPayment){
-									//This isn't a valid bitcoin address delete before we stick it in the db
-										$payoutAddress = "";
-										$returnError = gettext("The bitcoin address you supplied was invalid and therefore not updated into the system");
-								}else if($isValidPayment){
-	
-										$updateSuccess = mysql_query("UPDATE `accountBalance` SET `payoutAddress` = '".$payoutAddress."', `threshhold` = '".$threshHold."' WHERE `userId` = '".$getCredientials->userId."'")or die(mysql_error());
-										if($updateSuccess){
-											$goodMessage = gettext("Information was successfully updated!");
-										}else if(!$updateSuccess){
-											$returnError = gettext("Database Error | Contact the admin");
-										}
+								
+								$updateSuccess = mysql_query("UPDATE `accountBalance` SET `payoutAddress` = '".$payoutAddress."', `threshhold` = '".$threshHold."' WHERE `userId` = '".$getCredientials->userId."'")or die(mysql_error());
+								if($updateSuccess){
+									$goodMessage = gettext("Information was successfully updated!");
+								}else if(!$updateSuccess){
+									$returnError = gettext("Database Error | Contact the admin");
 								}
 					}
 

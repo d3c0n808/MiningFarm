@@ -9,11 +9,18 @@
 
 
 //Check if supplied deatils match those in the databse
-	$act = $_POST["act"];
-	if($act == "activate"){
-		$userId = $_POST["username"];
-		$authPin = $_POST["authNumber"];
-		$activateSuccess = activateAccount($userId, $authPin);
+	$username = $_GET["username"];
+	$authPin = $_GET["authNumber"];
+	
+	if(!isSet($username) || !isSet($authPin)){
+		//Reitreve from post
+			$username = $_POST["username"];
+			$authPin = $_POST["authNumber"];
+	}
+	
+	//Activate account
+	if($username && $authPin){
+		$activateSuccess = activateAccount($username, $authPin);
 		if($activateSuccess > 0){
 			$goodMessage = "Your acount is activated, You can login to your account now";
 		}else{
@@ -45,17 +52,12 @@
 							<?php
 								$authNumber = "";
 								$username = "Username";
-								if($_POST["authNumber"]){
-									$authNumber = $_POST["authNumber"];
-								}
-								if($_POST["username"]){
-									$username = $_POST["username"];
-								}
+
 							?>
 							<form action="activateAccount.php" method="post">
 								<input type="hidden" name="act" value="activate"/>
 								<span class="activateEmail">Type in your username &amp; authorization number below</span><br/>
-								<input type="text" value="<?php echo $authNumber; ?>" name="authNumber" value="" size="56"><br/>
+								<input type="text" value="<?php echo $authPin ?>" name="authNumber" value="" size="56"><br/>
 								<input type="text" value="<?php echo $username; ?>" name="username"><br/>
 								<input type="submit" value="Authorise Email">
 							</form>

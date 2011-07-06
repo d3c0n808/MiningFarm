@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 27, 2011 at 03:35 PM
+-- Generation Time: Jul 06, 2011 at 03:31 AM
 -- Server version: 5.1.54
 -- PHP Version: 5.3.5-1ubuntu7.2
 
@@ -33,14 +33,12 @@ CREATE TABLE IF NOT EXISTS `accountBalance` (
   `threshhold` varchar(5) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userId` (`userId`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `accountBalance`
 --
 
-INSERT INTO `accountBalance` (`id`, `userId`, `balance`, `payoutAddress`, `threshhold`) VALUES
-(40, 43, '126.871875', '', '');
 
 -- --------------------------------------------------------
 
@@ -64,6 +62,24 @@ CREATE TABLE IF NOT EXISTS `blogPosts` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `menuAddition`
+--
+
+CREATE TABLE IF NOT EXISTS `menuAddition` (
+  `id` int(255) NOT NULL,
+  `displayTitle` varchar(255) NOT NULL,
+  `url` varchar(1000) NOT NULL,
+  `order` int(5) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `menuAddition`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `networkBlocks`
 --
 
@@ -73,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `networkBlocks` (
   `timestamp` int(255) NOT NULL,
   `txid` varchar(255) NOT NULL,
   `confirms` int(255) NOT NULL,
+  `orphan` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -122,6 +139,30 @@ CREATE TABLE IF NOT EXISTS `shares` (
 
 --
 -- Dumping data for table `shares`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shares_dead`
+--
+
+CREATE TABLE IF NOT EXISTS `shares_dead` (
+  `id` bigint(30) NOT NULL AUTO_INCREMENT,
+  `blockNumber` int(255) NOT NULL,
+  `time` varchar(255) NOT NULL,
+  `rem_host` varchar(255) NOT NULL,
+  `username` varchar(120) NOT NULL,
+  `our_result` enum('Y','N') NOT NULL,
+  `upstream_result` enum('Y','N') DEFAULT NULL,
+  `reason` varchar(50) DEFAULT NULL,
+  `solution` varchar(257) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `shares_dead`
 --
 
 
@@ -203,15 +244,16 @@ CREATE TABLE IF NOT EXISTS `websiteSettings` (
   `cashoutMinimum` varchar(5) NOT NULL COMMENT 'The minimum balance required before a user can cash out',
   `serverFeePercentage` varchar(20) NOT NULL COMMENT 'Server fee in percents',
   `tradeHillWorth` varchar(20) NOT NULL COMMENT 'Current worth of bitcoins',
-  `currencyData` varchar(20) NOT NULL COMMENT 'Three letter identifiers what the general default currency should be set too'
+  `currencyData` varchar(20) NOT NULL COMMENT 'Three letter identifiers what the general default currency should be set too',
+  `stats_showallusers` int(1) NOT NULL COMMENT 'Although not recommended for commerical sites it is very usefull for private pools'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `websiteSettings`
 --
 
-INSERT INTO `websiteSettings` (`header`, `noreplyEmail`, `confirmEmailPrefix`, `slogan`, `browserTitle`, `cashoutMinimum`, `serverFeePercentage`, `tradeHillWorth`, `currencyData`) VALUES
-('Mining Pool v4', 'no-reply@yourdomain.com', 'Welcome you "Your pool name here" glad you are interested in our services, In order to activate your account you must click the link provided and you will be allowed immediate login access past this point. Thank you for you time.', 'IP:66.197.184.28 · PORT: 8341', 'Mining Pool', '1', '3', '15.3', 'tradehill-USD');
+INSERT INTO `websiteSettings` (`header`, `noreplyEmail`, `confirmEmailPrefix`, `slogan`, `browserTitle`, `cashoutMinimum`, `serverFeePercentage`, `tradeHillWorth`, `currencyData`, `stats_showallusers`) VALUES
+('Mining Pool v4', 'no-reply@yourdomain.com', 'Welcome you "Your pool name here" glad you are interested in our services, In order to activate your account you must click the link provided and you will be allowed immediate login access past this point. Thank you for you time.', 'IP:66.197.184.28 · PORT: 8341', 'Mining Pool', '1', '3', '13.86', 'tradehill-USD', 0);
 
 -- --------------------------------------------------------
 
@@ -232,6 +274,8 @@ CREATE TABLE IF NOT EXISTS `websiteUsers` (
   `emailAuthorised` int(1) NOT NULL DEFAULT '0',
   `emailAuthorisePin` varchar(64) NOT NULL,
   `authPin` varchar(255) NOT NULL COMMENT 'A pin that must be supplied when changing details to various things',
+  `failedLoginAttempts` int(5) NOT NULL,
+  `failedLoginTimestampLock` int(255) NOT NULL COMMENT 'Epoch time until user is allowed access to page',
   `apiToken` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
