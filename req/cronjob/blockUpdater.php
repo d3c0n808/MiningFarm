@@ -39,7 +39,7 @@
 
 //The following has nothing to do with updating the blocks but it DOES execute the auto instant payment for every users that has there threshold set
 	//Get minimum cashout
-	/*	$minimumCashoutQ = mysql_query("SELECT `cashoutMinimum` FROM `websiteSettings`");
+		$minimumCashoutQ = mysql_query("SELECT `cashoutMinimum` FROM `websiteSettings`");
 		$minimumCashoutObj = mysql_fetch_object($minimumCashoutQ);
 		$minimumCashout = $minimumCashoutObj->cashoutMinimum;
 
@@ -56,7 +56,7 @@
 					}
 			}
 
-*/
+
 	
 //Retireve JSON data from trade hill update it to database for quick retireval
 try{
@@ -74,7 +74,24 @@ try{
 }catch (Exception $e) {
 	echo "Failed to get TradeHill bitcoioin worth<br/>".$e;
 }
-echo time();
+
+//Retireve JSON data from trade hill update it to database for quick retireval
+try{
+	
+	$file = fopen("http://mtgox.com/code/data/ticker.php", "rb");
+	$tradedata = fread($file, 8192);
+	fclose($file);
+	
+	//get trade hill json data
+		$jsonTradedata = json_decode($tradedata, true);
+		print_r($jsonTradedata);
+	//calculate average with the provided data(Buy, Sell, last salt)
+		$mtgoxWorth = round((($jsonTradedata[ticker][last]+$jsonTradedata[ticker][sell]+$jsonTradedata[ticker][buy])/3), 2);
+		
+	mysql_query("UPDATE `websiteSettings` SET `mtgoxWorth` = '".$mtgoxWorth."'");
+}catch(Exception $e){
+	echo "Failed to get MtGox trading worth value";
+}
 ?>
 
 

@@ -188,8 +188,8 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 										//Attempted connection
 										try{
 											$bitcoinController = new BitcoinClient($rpcType, $rpcUsername, $rpcPassword, $rpcHost);
-										}catch(Exception $bitcoinFailed){
-											echo '<span class="returnError">'.$bitcoindFailed.'</span>';
+										}catch(Exception $e){
+											echo '<span class="returnError">Bitcoin Daemon is not running, '.$bitcoindFailed.'</span>';
 										}
 									
 										//If the bitcoin connection is open? Display graph
@@ -341,7 +341,7 @@ $loginValid	= $getCredientials->checkLogin($rawCookie);
 									<h3>No blocks found yet</h3>
 								</div><br/><br/>
 							</td>
-						</td>
+						</tr>
 					</tbody>
 				</table>
 				</div><br/><br/>

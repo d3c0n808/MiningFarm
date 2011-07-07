@@ -308,6 +308,20 @@ function activateAccount($username, $authPin){
 	return $detailsMatch;
 }
 
+
+class stats{
+	function outputPoolTotal($timestamp_threshhold=0){
+		//This function will output the pools total mhashes/sec
+		
+		//Connect to DB
+			connectToDb();
+			
+			
+					
+	}
+}
+
+
 ////////////// Content Output ////////////////////////////////////////////////////////////
 //Output the admin fee
 function getAdminFee(){

@@ -38,7 +38,7 @@ while($share = mysql_fetch_array($listSharesQ)){
 /////////////// Generate Mhash/s ////////////////////////////////////
 $recordedTime	= time();
 $fifteenMinutesAgo = $recordedTime;
-$fifteenMinutesAgo -= 60*15;
+$fifteenMinutesAgo -= 60*2;
 
 
 //Get all `pool_workers` and add there current MHash/s to the stats
@@ -52,12 +52,12 @@ while($worker = mysql_fetch_array($poolWorkersQ)){
 				$firstTimestamp = mysql_query("SELECT `epochTimestamp` FROM `shares` WHERE `id` = '".$worker["id"]."' AND `epochTimestamp` >= $fifteenMinutesAgo");
 				
 			//Hashes per second = Number of shares / timedelta * hashspace
-				$hashesPerSecond =  $numShares / (60*15) * 4294967296;
+				$hashesPerSecond =  $numShares / (60*2) /** 4294967296*/;
 				
 			//Convert to Mhashes, round then upload to server
 				$hashesPerSecond /= 1024;
 				$hashesPerSecond /= 1024;
-				$hashesPerSecond = ceil($hashesPerSecond);
+				$hashesPerSecond = floor($hashesPerSecond);
 			//Insert into database
 				mysql_query("INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `timestamp`) VALUES('".$worker["username"]."', '".$hashesPerSecond."', '".$recordedTime."')")or die(mysql_error());
 		}else if($numShares == 0){
@@ -94,51 +94,5 @@ $poolTotalRows = mysql_num_rows($poolTotalHashQ);
 //Add pool average & pool total to table
 mysql_query("INSERT INTO `stats_poolMHashHistory` (`timestamp`, `averageMhash`, `totalMhash`)
 						VALUES('$recordedTime', '$averagePoolHash', '$totalPoolHash')")or die(mysql_error());
-
-
-/////////////////////////TESTING CODE BELOW////////////////////
-/*
-$fiveMinutesAgo = time();
-$fiveMinutesAgo -= 60*5;
-
-//Get all `pool_workers` and add there current shares data to stats
-$poolWorkersQ = mysql_query("SELECT `id`, `associatedUserId`, `username` FROM `pool_worker`");
-while($worker = mysql_fetch_array($poolWorkersQ)){
-		//Check to see if this worker has subbmitted any shares within the last 5 minutes
-			$sharesQ = mysql_query("SELECT `id`, `epochTimestamp` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `epochTimestamp` >= $fiveMinutesAgo");
-			$numShares = mysql_num_rows($sharesQ);
-			
-			if($numShares >= 1){
-				//calculate how many shares they subbmitted in the last 5 minutes
-				//and at the same time figure out how many seconds it took to subbmit each share
-					$lastShare = 0;
-					$totalTimeBetweenShares = 0;
-					while($share = mysql_fetch_array($sharesQ)){						
-						if($lastShare > 0){
-							//Subtract $lastShare with $share["epochTimestamp"] = Amount of time between shares
-							$timeBetweenShares = $share["epochTimestamp"]-$lastShare;
-							$lastShare = $share["epochTimestamp"];
-							//Add it to total time between shares
-							$totalTimeBetweenShares += $timeBetweenShares;
-						}
-						
-						if($lastShare == 0){
-							$lastShare = $share["epochTimestamp"];
-						}
-					}
-					
-					//Convert total time between shares in minutes
-					$totalTimeBetweenShares /= 60;
-					$totalTimeBetweenShares = round($totalTimeBetweenShares, 2);
-					$insertQuery = "'".$worker["username"]."', '$totalTimeBetweenShares', '".time()."'";
-			}else if($numShares == 0){
-				//Insert into stats as zero minutes per share
-					$insertQuery = "'".$worker["username"]."', '0', '".time()."'";
-			}
-		
-			mysql_query("INSERT INTO `stats_userSharesHistory` (`username`, `minutesPerShare`, `timestamp`) VALUES(".$insertQuery.")")or die(mysql_error());
-}
-*/
-
 
 ?>

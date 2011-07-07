@@ -68,7 +68,7 @@ if(!$loginValid){
 					$adminFee = getAdminFee();
 			?>
 			<span class="userText">Bitcoin Value: <a href="http://www.tradehill.com/TradeData?r=TH-R13231" target="tradeHillPage"><span class="estimated">$<?php echo $tradeHillWorth->tradeHillWorth;?></span></a></span><br/>
-			<span class="userText">Estimated: <span class="estimated"><?php echo $getCredientials->estimatedReward*(50-(50*($adminFee*.01)));?> BTC</span></span><br/>
+			<span class="userText">Estimated: <span class="estimated"><?php echo round((50-$getCredientials->estimatedReward)-(50*($adminFee*.01)), 2);?> BTC</span></span><br/>
 			<span class="userText">Total Balance: <span class="confirmedBalance"><?php echo $totalBalance;?></span></span><br/>
 			<a href="/logout.php">Logout</a>
 	</div>

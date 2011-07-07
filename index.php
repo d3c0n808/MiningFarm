@@ -7,6 +7,8 @@ $functions	= $req."functions.php";
 //Include hashing functions
 include($functions);
 
+//Include bitcoind functions
+include($bitcoind);
 
 //Set user details for userInfo box
 $rawCookie		= "";
@@ -178,6 +180,89 @@ if(isSet($_COOKIE[$cookieName])){
 					<?php
 						}
 					?>
+					<br/>
+					<!-- quick bloging -->
+					<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%">
+						<tbody>
+							<tr>
+								<td>	
+									<!-- start blogging -->
+									<?php
+										//retireve blogs
+										$blogs = mysql_query("SELECT `title`, `timestamp`, `message` FROM `blogPosts` ORDER BY `timestamp` DESC");
+										while($blog = mysql_fetch_array($blogs)){
+									?>
+									<table align="center" cellpadding="0" cellspacing="0" class="bigContent" width="100%">
+										<tbody>
+											<tr>
+												<td class="contTL">
+												&nbsp;
+												</td>
+												<td class="contTC">
+													Blog Heading
+												</td>
+												<td class="contTR">
+												&nbsp;
+												</td>
+											</tr>
+											<tr>
+												<td colspan="3" class="contContent">
+													BLOGGING CONTENT
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<?php
+										}
+									?>
+								</td>
+								<td valign="top">
+													<!-- Quick worker stats -->
+									<table align="center" cellpadding="0" cellspacing="0" class="bigContent" width="100%">
+										<tbody>
+											<tr>
+												<td class="contTL">
+												&nbsp;
+												</td>
+												<td class="contTC">
+													Quick Server Status
+												</td>
+												<td class="contTR">
+												&nbsp;
+												</td>
+											</tr>
+											<tr>
+												<td colspan="3" class="contContent">
+													<?php
+														try{
+														//Open a bitcoind connection
+															$bitcoinController = new BitcoinClient($rpcType, $rpcUsername, $rpcPassword, $rpcHost);
+														}catch(Exception $e){
+															echo "Connecting to bitcoin wallet failed | Please contact admin";
+														}
+														
+														if($bitcoinController != false){
+															//Show some quick stats
+															
+																//Get total workers working
+																	$fifteenMinutesAgo = time();
+																	$fifteenMinutesAgo -= 60*15;
+																	$totalWorkersQ = mysql_query("SELECT `id` FROM `stats_userMHashHistory` WHERE `timestamp` < $fifteenMinutesAgo");
+																	$totalWorkers = mysql_num_rows($totalWorkersQ);
+													?>
+													<b>Current Difficulty:</b> <?php echo $bitcoinController->getDifficulty();?><br/>
+													<b>Total Workers:</b> <?php echo $totalWorkers;?><br/>
+													<?php
+														}
+													?>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table><br />
 
 			<?php
 			//Include Footer
